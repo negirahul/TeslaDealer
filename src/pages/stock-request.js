@@ -309,29 +309,31 @@ function StockRequest({ userDetails }) {
               <Button variant="primary" className="btn-black-form mb-3" onClick={placeModalShow}>
                 <Icon.Basket className="me-2" />ADD ITEM IN CART
               </Button>
-              <div className="bg-white shadow tab-body-edit">
-                {!placeDetails ? ''
-                  : placeDetails.length === 0 ? (
-                    <div className="empty-box shadow my-4 text-center">
-                      <img src={require('../img/empty-box.png')} alt="" />
-                      <h3>No Orders Yet</h3>
-                      <p>Looks like you have not placed/ receive any stock yet!.</p>
-                    </div>
-                  )
-                    : (
-                      <div>
-                        {placeDetails.map((item, index) => (
-                          <div className="shop-item d-flex align-items-center">
-                            <div className="cart-text-no w25">{index + 1}.</div>
-                            <div className="cart-text w50">{item.cat_name}<span>Model No. {item.model_name} | Qty: {item.qty}</span></div>
-                            <div className="w25"><button type="button" className="cart-item-btn" onClick={() => deletePunch(item.id)}><Icon.Trash3 /></button></div>
-                          </div>
-                        ))}
-                        <hr />
-                        <Button variant="primary" className="btn-black-form mb-3" onClick={confirmPlaceOrder}>CONFIRM ORDER</Button>
+              <div className="mainbody" style={{height: "60vh"}}>
+                <div className="bg-white shadow tab-body-edit">
+                  {!placeDetails ? ''
+                    : placeDetails.length === 0 ? (
+                      <div className="empty-box shadow my-4 text-center">
+                        <img src={require('../img/empty-box.png')} alt="" />
+                        <h3>No Orders Yet</h3>
+                        <p>Looks like you have not placed/ receive any stock yet!.</p>
                       </div>
                     )
-                }
+                      : (
+                        <div>
+                          {placeDetails.map((item, index) => (
+                            <div className="shop-item d-flex align-items-center">
+                              <div className="cart-text-no w25">{index + 1}.</div>
+                              <div className="cart-text w50">{item.cat_name}<span>Model No. {item.model_name} | Qty: {item.qty}</span></div>
+                              <div className="w25"><button type="button" className="cart-item-btn" onClick={() => deletePunch(item.id)}><Icon.Trash3 /></button></div>
+                            </div>
+                          ))}
+                          <hr />
+                          <Button variant="primary" className="btn-black-form mb-3" onClick={confirmPlaceOrder}>CONFIRM ORDER</Button>
+                        </div>
+                      )
+                  }
+                </div>
               </div>
             </Tab>
 
@@ -339,101 +341,105 @@ function StockRequest({ userDetails }) {
               <Button variant="primary" className="btn-black-form mb-3" onClick={punchModalShow}>
                 <Icon.Basket className="me-2" />ADD ITEM IN CART
               </Button>
-              <div className="bg-white shadow tab-body-edit">
-                {!punchDetails ? ''
-                  : punchDetails.length === 0 ? (
-                    <div className="empty-box shadow my-4 text-center">
-                      <img src={require('../img/empty-box.png')} alt="" />
-                      <h3>No Orders Yet</h3>
-                      <p>Looks like you have not placed/ receive any stock yet!.</p>
-                    </div>
-                  )
-                    : (
-                      <div>
-                        {punchDetails.map((item, index) => (
-                          <div className="shop-item d-flex align-items-center">
-                            <div className="cart-text-no w25">{index + 1}.</div>
-                            <div className="cart-text w50">{item.cat_name}<span>Model No. {item.model_name} | Qty: {item.qty}</span></div>
-                            <div className="w25"><button type="button" className="cart-item-btn" onClick={() => deletePunch(item.id)}><Icon.Trash3 /></button></div>
-                          </div>
-                        ))}
-                        <div className="mb-3">
-                          <label htmlFor="bill_copy" className="form-label">Upload Bill Copy</label>
-                          <input type="file" name="bill_copy" id="bill_copy" className="form-control" onChange={invoiceChange} accept="application/pdf" />
-                        </div>
-                        <hr />
-                        <Button variant="primary" className="btn-black-form mb-3" onClick={confirmPunchOrder}>CONFIRM ORDER</Button>
+              <div className="mainbody" style={{height: "60vh"}}>
+                <div className="bg-white shadow tab-body-edit">
+                  {!punchDetails ? ''
+                    : punchDetails.length === 0 ? (
+                      <div className="empty-box shadow my-4 text-center">
+                        <img src={require('../img/empty-box.png')} alt="" />
+                        <h3>No Orders Yet</h3>
+                        <p>Looks like you have not placed/ receive any stock yet!.</p>
                       </div>
                     )
-                }
+                      : (
+                        <div>
+                          {punchDetails.map((item, index) => (
+                            <div className="shop-item d-flex align-items-center">
+                              <div className="cart-text-no w25">{index + 1}.</div>
+                              <div className="cart-text w50">{item.cat_name}<span>Model No. {item.model_name} | Qty: {item.qty}</span></div>
+                              <div className="w25"><button type="button" className="cart-item-btn" onClick={() => deletePunch(item.id)}><Icon.Trash3 /></button></div>
+                            </div>
+                          ))}
+                          <div className="mb-3">
+                            <label htmlFor="bill_copy" className="form-label">Upload Bill Copy</label>
+                            <input type="file" name="bill_copy" id="bill_copy" className="form-control" onChange={invoiceChange} accept="application/pdf" />
+                          </div>
+                          <hr />
+                          <Button variant="primary" className="btn-black-form mb-3" onClick={confirmPunchOrder}>CONFIRM ORDER</Button>
+                        </div>
+                      )
+                  }
+                </div>
               </div>
             </Tab>
 
             <Tab eventKey="profile" title="Previous Order">
-              <div className="bg-white shadow tab-body-edit">
+              <div className="mainbody" style={{height: "70vh"}}>
+                <div className="bg-white shadow tab-body-edit">
 
-                {!orderDetails ? ''
-                  : orderDetails.length === 0 ? (
-                    <div className="empty-box shadow my-4 text-center">
-                      <img src={require('../img/empty-box.png')} alt="" />
-                      <h3>No Orders</h3>
-                      <p>No record available in your order history.</p>
-                    </div>
-                  )
-                    : (orderDetails.map((item, index) => (
-                      <div>
-                        <div className="shop-item d-flex align-items-center">
-                          <div className="cart-text-no w25">{index + 1}.</div>
-                          <div className="cart-text w50">
-                            Product: {item.product} | Qty: {item.qty}
-                            <span>
-                              {getFormattedDate(item.order.ddate, 'day_month_year')} |
-                              <strong>{{ '1': ' Punched', '2': ' Placed' }[item.order.order_type]} Order</strong>
-                            </span>
-                          </div>
-                          {/* <div className="cart-icon w25 text-info">
-                            <Icon.Check2Circle />
-                          </div> */}
-                          {{
-                            '0':<div className="cart-icon w25 text-warning"><Icon.QuestionCircle /></div>, 
-                            '1':<div className="cart-icon w25 text-success"><Icon.Check2Circle /></div>, 
-                            '2':<div className="cart-icon w25 text-danger"><Icon.XCircle /></div>,
-                            '3':<div className="cart-icon w25 text-success"><Icon.Check2Circle /></div>,
-                            '4':<div className="cart-icon w25 text-success"><Icon.Check2Circle /></div>,
-                            '5':<div className="cart-icon w25 text-success"><Icon.Check2Circle /></div>
-                          }
-                          [item.order.order_status]}
-                        </div>
-                        <div className="w-100"><button type="button" className="cart-item-btn cart-item-forn w-100" onClick={() => detailsModalShow(item)}>View Details</button>
-                        </div>
-                        <hr />
+                  {!orderDetails ? ''
+                    : orderDetails.length === 0 ? (
+                      <div className="empty-box shadow my-4 text-center">
+                        <img src={require('../img/empty-box.png')} alt="" />
+                        <h3>No Orders</h3>
+                        <p>No record available in your order history.</p>
                       </div>
-                    )))
-                }
+                    )
+                      : (orderDetails.map((item, index) => (
+                        <div>
+                          <div className="shop-item d-flex align-items-center">
+                            <div className="cart-text-no w25">{index + 1}.</div>
+                            <div className="cart-text w50">
+                              Product: {item.product} | Qty: {item.qty}
+                              <span>
+                                {getFormattedDate(item.order.ddate, 'day_month_year')} |
+                                <strong>{{ '1': ' Punched', '2': ' Placed' }[item.order.order_type]} Order</strong>
+                              </span>
+                            </div>
+                            {/* <div className="cart-icon w25 text-info">
+                              <Icon.Check2Circle />
+                            </div> */}
+                            {{
+                              '0':<div className="cart-icon w25 text-warning"><Icon.QuestionCircle /></div>, 
+                              '1':<div className="cart-icon w25 text-success"><Icon.Check2Circle /></div>, 
+                              '2':<div className="cart-icon w25 text-danger"><Icon.XCircle /></div>,
+                              '3':<div className="cart-icon w25 text-success"><Icon.Check2Circle /></div>,
+                              '4':<div className="cart-icon w25 text-success"><Icon.Check2Circle /></div>,
+                              '5':<div className="cart-icon w25 text-success"><Icon.Check2Circle /></div>
+                            }
+                            [item.order.order_status]}
+                          </div>
+                          <div className="w-100"><button type="button" className="cart-item-btn cart-item-forn w-100" onClick={() => detailsModalShow(item)}>View Details</button>
+                          </div>
+                          <hr />
+                        </div>
+                      )))
+                  }
 
-                {/* <div className="shop-item d-flex align-items-center">
-                  <div className="cart-text-no w25">1.</div>
-                  <div className="cart-text w50">Product: 25 | Qty: 40 <span>27 Oct 2023 | Order Placed</span></div>
-                  <div className="cart-icon w25 text-success">
-                    <Icon.Check2Circle />
+                  {/* <div className="shop-item d-flex align-items-center">
+                    <div className="cart-text-no w25">1.</div>
+                    <div className="cart-text w50">Product: 25 | Qty: 40 <span>27 Oct 2023 | Order Placed</span></div>
+                    <div className="cart-icon w25 text-success">
+                      <Icon.Check2Circle />
+                    </div>
                   </div>
-                </div>
 
-                <div className="text-end">
+                  <div className="text-end">
+                    <div className="w-50"><button type="button" className="cart-item-btn cart-item-forn w-100" onClick={detailsModalShow}>View Details</button>
+                    </div>
+                  </div>
+
+                  <div className="shop-item d-flex align-items-center">
+                    <div className="cart-text-no w25">1.</div>
+                    <div className="cart-text w50">Product: 25 | Qty: 40 <span>27 Oct 2023 | Order Pending</span></div>
+                    <div className="cart-icon w25 text-info">
+                      <Icon.ArrowClockwise />
+                    </div>
+                  </div>
                   <div className="w-50"><button type="button" className="cart-item-btn cart-item-forn w-100" onClick={detailsModalShow}>View Details</button>
-                  </div>
-                </div>
+                  </div> */}
 
-                <div className="shop-item d-flex align-items-center">
-                  <div className="cart-text-no w25">1.</div>
-                  <div className="cart-text w50">Product: 25 | Qty: 40 <span>27 Oct 2023 | Order Pending</span></div>
-                  <div className="cart-icon w25 text-info">
-                    <Icon.ArrowClockwise />
-                  </div>
                 </div>
-                <div className="w-50"><button type="button" className="cart-item-btn cart-item-forn w-100" onClick={detailsModalShow}>View Details</button>
-                </div> */}
-
               </div>
             </Tab>
           </Tabs>

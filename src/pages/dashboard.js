@@ -23,7 +23,7 @@ function Dashboard({ userDetails }) {
   }, [navigate])
 
   if(userDetails.profile_update == 1){
-    navigate("/profile");
+    navigate("/profile"); 
   }
 
   // let history = useHistory();
@@ -167,14 +167,14 @@ function Dashboard({ userDetails }) {
               </div>
 
 
-              <div className="col-3 my-auto">
+              {/* <div className="col-3 my-auto">
                 <Link className="nav-Link open-link open-link-app" to={'../profile'}>
                   <div className="button-box shadow">
                     <Icon.Person />
                     <span>Manage Profile</span>
                   </div>
                 </Link>
-              </div>
+              </div> */}
 
               <div className="col-3 my-auto">
                 <Link className="nav-Link open-link open-link-app" to={'../customer'}>

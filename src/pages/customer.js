@@ -46,7 +46,7 @@ function Customer({ userDetails }) {
               <p>Looks like you have not added any customer to your account.</p>
             </div>
           : 
-            <div>  
+            <div className="mainbody" style={{height: '90vh'}}>  
               {customers.map((item) => (
                 <div className="shop-item d-flex align-items-center bg-white shadow shop-item-round my-3">
                   <div className="cart-text-no w25">
