@@ -50,7 +50,8 @@ function Dashboard({ userDetails }) {
   }, [userDetails])
   const [offer, setOffer] = useState([]);
   function fetchOffer() {
-    axios.post(process.env.REACT_APP_ADMIN_URL + 'offerDetails.php', {user_type:userDetails.user_type, user_state:userDetails.state}).then(function (response) {
+    axios.post(process.env.REACT_APP_ADMIN_URL + 'offerDetails.php', 
+      {user_type:userDetails.user_type, user_state:userDetails.state, prefer_dealer:userDetails.prefer_dealer}).then(function (response) {
       var data = response.data;
       if (data.statusCode === 200) {
         setOffer(data.offer);
@@ -99,9 +100,8 @@ function Dashboard({ userDetails }) {
             <div className="profile-name w-50">
               {userDetails.name}<span>{userDetails.company_name}</span><span>Authorized Dealer</span>
               <hr className="my-1"/>
-              { userDetails.distributor_name != undefined ? 
-                <span>{userDetails.distributor_name} (Distributor)<br/> {userDetails.distributor_mobile_number}</span>  
-              : '' }
+              <span>{userDetails.user_product_group}</span>
+              <span>{userDetails.prefer_user == 1 ? 'Preferred Partner (LBS)' : ''}</span>
             </div>
             <div className="drop-btn w-25 text-end">
               {/* <Icon.ThreeDotsVertical /> */}
@@ -118,7 +118,7 @@ function Dashboard({ userDetails }) {
 
             <div className="d-flex align-items-center">
               <div className="w-25 icon-2"><Icon.Wallet /></div>
-              <div className="w-50 wallet-text">&#8377; {walletDetails.wallet}<span>Your Wallet Balance</span></div>
+              <div className="w-50 wallet-text">{walletDetails.wallet}<span>Your Wallet Points</span></div>
               <div className="drop-btn w-25 text-white"><Link className="text-white" to={'../wallet'}><Icon.ThreeDotsVertical /></Link></div>
             </div>
           </div>
@@ -146,7 +146,14 @@ function Dashboard({ userDetails }) {
                 </Link>
               </div>
 
-
+              <div className="col-3 my-auto">
+                <Link className="nav-Link open-link open-link-app" to={'../lead-management'}>
+                  <div className="button-box shadow">
+                    <Icon.ListTask />
+                    <span>Leads</span>
+                  </div>
+                </Link>
+              </div>
 
               {/* <div className="col-3 my-auto">
                 <Link className="nav-Link open-link open-link-app" to={'../wallet'}>

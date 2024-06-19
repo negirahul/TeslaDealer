@@ -14,7 +14,8 @@ function Offers({ userDetails }) {
   }, [userDetails])
 
   function fetchOffer(){
-    axios.post(process.env.REACT_APP_ADMIN_URL + 'offerDetails.php', {user_type:userDetails.user_type, user_state:userDetails.state}).then(function (response) {
+    axios.post(process.env.REACT_APP_ADMIN_URL + 'offerDetails.php', 
+      {user_type:userDetails.user_type, user_state:userDetails.state, prefer_dealer:userDetails.prefer_dealer}).then(function (response) {
       var data = response.data;
       if (data.statusCode === 200) {
         setOffer(data.offer);

@@ -18,6 +18,9 @@ import Swal from 'sweetalert2';
 import { Filesystem, Directory } from '@capacitor/filesystem';
 
 function StockRequest({ userDetails }) {
+
+  const [disabledButton, setdisabledButton] = useState(false);
+
   const [punchModal, setPunchModal] = useState(false);
   const punchModalClose = () => setPunchModal(false);
   const punchModalShow = () => setPunchModal(true);
@@ -84,12 +87,25 @@ function StockRequest({ userDetails }) {
       toast.error(msg, { position: "top-center", newestOnTop: true, autoClose: 5000, closeOnClick: true, rtl: false, pauseOnFocusLoss: true, draggable: true, theme: "dark" });
   }
 
+  const [distributors, setDistributors] = useState([]);
+  useEffect(() => {
+    getDistributors();
+  }, [userDetails])
+  function getDistributors() {
+    axios.get(process.env.REACT_APP_ADMIN_URL + 'dealersDistributor.php?userId=' + userDetails.id).then(function (response) {
+      var data = response.data;
+      if (data.statusCode === 200) {
+        setDistributors(data.distributor);
+      }
+    });
+  }
+  
   const [productDetails, setProductDetails] = useState([]);
   useEffect(() => {
     getProductDetails();
   }, [userDetails])
   function getProductDetails() {
-    axios.get(process.env.REACT_APP_ADMIN_URL + 'productDetails.php').then(function (response) {
+    axios.get(process.env.REACT_APP_ADMIN_URL + 'stockProductDetails.php').then(function (response) {
       var data = response.data;
       if (data.statusCode === 200) {
         setProductDetails(data.data);
@@ -130,6 +146,15 @@ function StockRequest({ userDetails }) {
     const name = event.target.name;
     const value = event.target.value;
     setPunch(values => ({ ...values, [name]: value }));
+    // if (name == 'main_cat'){
+    //   if(value == 'Battery'){
+
+    //   }else if(value == 'Lubricant'){
+
+    //   }else if(value == 'Spares Part'){
+
+    //   }
+    // }
     if (name == 'cat_id') {
       productDetails.forEach((employee, index) => {
         if (employee.id == value) {
@@ -137,6 +162,13 @@ function StockRequest({ userDetails }) {
         }
       })
     }
+  }
+  
+  const [selectDistributor, setSelectDistributor] = useState(null);
+  const changeDistributor = (event) => {
+    const name = event.target.name;
+    const value = event.target.value;
+    setSelectDistributor(value);
   }
 
   const [modelDetails, setModelDetails] = useState([]);
@@ -149,6 +181,7 @@ function StockRequest({ userDetails }) {
     if (punch.qty === undefined || punch.qty === '') { notify("alert", "Please Enter Quantity"); return; }
     if (punch.remark === undefined || punch.remark === '') { notify("alert", "Please Enter Remark"); return; }
 
+    setdisabledButton(true);
     axios.post(process.env.REACT_APP_ADMIN_URL + 'punchProduct.php', { punch, userDetails, order_type: 1 }).then(function (response) {
       var data = response.data;
       if (data.statusCode === 200) {
@@ -160,6 +193,7 @@ function StockRequest({ userDetails }) {
       setPunchModal(false);
       setPunch(null);
       getAllOrderDetails();
+      setdisabledButton(false);
     });
   }
 
@@ -224,6 +258,7 @@ function StockRequest({ userDetails }) {
     if (punch.qty === undefined || punch.qty === '') { notify("alert", "Please Enter Quantity"); return; }
     if (punch.remark === undefined || punch.remark === '') { notify("alert", "Please Enter Remark"); return; }
 
+    setdisabledButton(true);
     axios.post(process.env.REACT_APP_ADMIN_URL + 'punchProduct.php', { punch, userDetails, order_type: 2 }).then(function (response) {
       var data = response.data;
       if (data.statusCode === 200) {
@@ -235,21 +270,24 @@ function StockRequest({ userDetails }) {
       setPlaceModal(false);
       setPunch(null);
       getAllOrderDetails();
+      setdisabledButton(false);
     });
   }
 
   const confirmPlaceOrder = () => {
+    if(selectDistributor === null || selectDistributor === ''){  notify("alert","Please Select Distributor First");return;  }
     Swal.fire({
       title: 'Are you sure?', icon: 'warning', showCancelButton: true, confirmButtonColor: '#3085d6', cancelButtonColor: '#d33', confirmButtonText: 'Yes, do it!'
     }).then((result) => {
       if (result.isConfirmed) {
-        axios.post(process.env.REACT_APP_ADMIN_URL + 'confirmPlaceOrder.php', { userDetails }).then(function (response) {
+        axios.post(process.env.REACT_APP_ADMIN_URL + 'confirmPlaceOrder.php', { userDetails, distributor_id: selectDistributor }).then(function (response) {
           var data = response.data;
           if (data.statusCode === 200) {
             notify("success", data.msg);
           } else if (data.statusCode === 201) {
             notify("alert", data.msg);
           }
+          setSelectDistributor(null);
           getAllOrderDetails();
         });
       }
@@ -305,7 +343,7 @@ function StockRequest({ userDetails }) {
         <div className="mt-4">
           <Tabs defaultActiveKey="placed" id="uncontrolled-tab-example" className="mb-3" fill>
 
-            <Tab eventKey="placed" title="Placed Order">
+            <Tab eventKey="placed" title="New Order">
               <Button variant="primary" className="btn-black-form mb-3" onClick={placeModalShow}>
                 <Icon.Basket className="me-2" />ADD ITEM IN CART
               </Button>
@@ -321,6 +359,19 @@ function StockRequest({ userDetails }) {
                     )
                       : (
                         <div>
+                          <div className="mb-3">
+                            <select className="form-control" name="cat_id" id="cat_id" onChange={changeDistributor}>
+                              <option value="">Select Distributor</option>
+                              {!distributors ? (
+                                <option>Loading data...</option>
+                              ) : distributors.length === 0 ? (
+                                <option>No data found</option>
+                              ) : (distributors.map((item) => (
+                                <option value={item.id}>{item.name} | {item.mobile_number}</option>
+                              ))
+                              )}
+                            </select>
+                          </div>
                           {placeDetails.map((item, index) => (
                             <div className="shop-item d-flex align-items-center">
                               <div className="cart-text-no w25">{index + 1}.</div>
@@ -337,7 +388,7 @@ function StockRequest({ userDetails }) {
               </div>
             </Tab>
 
-            <Tab eventKey="home" title="Punched Order">
+            {/* <Tab eventKey="home" title="Punched Order">
               <Button variant="primary" className="btn-black-form mb-3" onClick={punchModalShow}>
                 <Icon.Basket className="me-2" />ADD ITEM IN CART
               </Button>
@@ -371,10 +422,10 @@ function StockRequest({ userDetails }) {
                   }
                 </div>
               </div>
-            </Tab>
+            </Tab> */}
 
-            <Tab eventKey="profile" title="Previous Order">
-              <div className="mainbody" style={{height: "70vh"}}>
+            <Tab eventKey="profile" title="Old Order">
+              <div className="mainbody" style={{height: "75vh"}}>
                 <div className="bg-white shadow tab-body-edit">
 
                   {!orderDetails ? ''
@@ -390,6 +441,7 @@ function StockRequest({ userDetails }) {
                           <div className="shop-item d-flex align-items-center">
                             <div className="cart-text-no w25">{index + 1}.</div>
                             <div className="cart-text w50">
+                              Distributor: {item.dist_detail.name}, {item.dist_detail.mobile_number}<br/>
                               Product: {item.product} | Qty: {item.qty}
                               <span>
                                 {getFormattedDate(item.order.ddate, 'day_month_year')} |
@@ -454,15 +506,33 @@ function StockRequest({ userDetails }) {
         <Modal.Body>
           <form onSubmit={punchSubmit}>
             <div className="mb-3">
+              <label htmlFor="main_cat" className="form-label">Select Main Category</label>
+              <select className="form-control" name="main_cat" id="main_cat" onChange={punchChange}>
+                <option value="">Select Main Category</option>
+                <option>Battery</option>
+                <option>Lubricant</option>
+                <option>Spares Part</option>
+              </select>
+            </div>
+            <div className="mb-3">
               <label htmlFor="cat_id" className="form-label">Select Category</label>
               <select className="form-control" name="cat_id" id="cat_id" onChange={punchChange}>
                 <option value="">Select Category</option>
                 {!productDetails ? (
-                  <option>Loading data...</option>
+                  <option value="">Loading data...</option>
                 ) : productDetails.length === 0 ? (
-                  <option>No data found</option>
+                  <option value="">No data found</option>
                 ) : (productDetails.map((item) => (
-                  <option value={item.id} data-key={item.models} >{item.name}</option>
+                  punch.main_cat == undefined ? <option value="">Select Main Category</option> :
+                    punch.main_cat.length == 0 ? <option value="">Select Main Category</option> :
+                      punch.main_cat == 'Lubricant' ? 
+                        item.group_id == 8 ? <option value={item.id} data-key={item.models} >{item.name}</option> : ''
+                      : punch.main_cat == 'Spares Part' ? 
+                        item.group_id == 9 ? <option value={item.id} data-key={item.models} >{item.name}</option> : ''
+                      : punch.main_cat == 'Battery' ? 
+                        (item.group_id != 8 && item.group_id != 9) ? 
+                          <option value={item.id} data-key={item.models} >{item.name}</option> : ''
+                      : <option value="">Select Main Category</option>
                 ))
                 )}
               </select>
@@ -503,15 +573,33 @@ function StockRequest({ userDetails }) {
         <Modal.Body>
           <form onSubmit={placeSubmit}>
             <div className="mb-3">
+              <label htmlFor="main_cat" className="form-label">Select Main Category</label>
+              <select className="form-control" name="main_cat" id="main_cat" onChange={punchChange}>
+                <option value="">Select Main Category</option>
+                <option>Battery</option>
+                <option>Lubricant</option>
+                <option>Spares Part</option>
+              </select>
+            </div>
+            <div className="mb-3">
               <label htmlFor="cat_id" className="form-label">Select Category</label>
               <select className="form-control" name="cat_id" id="cat_id" onChange={punchChange}>
                 <option value="">Select Category</option>
                 {!productDetails ? (
-                  <option>Loading data...</option>
+                  <option value="">Loading data...</option>
                 ) : productDetails.length === 0 ? (
-                  <option>No data found</option>
+                  <option value="">No data found</option>
                 ) : (productDetails.map((item) => (
-                  <option value={item.id} data-key={item.models} >{item.name}</option>
+                  punch.main_cat == undefined ? '' :
+                    punch.main_cat.length == 0 ? '' :
+                      punch.main_cat == 'Lubricant' ? 
+                        item.group_id == 8 ? <option value={item.id} data-key={item.models} >{item.name}</option> : ''
+                      : punch.main_cat == 'Spares Part' ? 
+                        item.group_id == 9 ? <option value={item.id} data-key={item.models} >{item.name}</option> : ''
+                      : punch.main_cat == 'Battery' ? 
+                        (item.group_id != 8 && item.group_id != 9) ? 
+                          <option value={item.id} data-key={item.models} >{item.name}</option> : ''
+                      : ''
                 ))
                 )}
               </select>
@@ -525,7 +613,7 @@ function StockRequest({ userDetails }) {
                 ) : modelDetails.length === 0 ? (
                   <option>No data found</option>
                 ) : (modelDetails.map((item) => (
-                  <option value={item.id}>{item.model_name}</option>
+                  <option value={item.id}>{item.model_name} | {item.model_description}</option>
                 ))
                 )}
               </select>

@@ -68,10 +68,10 @@ function Profile({ userDetails }) {
     console.log(inputs);
     if (inputs.name === undefined || inputs.name === '') { notify("alert", "Please Enter Your Name"); return; }
     if (inputs.email_address === undefined || inputs.email_address === '') { notify("alert", "Please Enter Your Email Address"); return; }
-    if (inputs.company_name === undefined || inputs.company_name === '') { notify("alert", "Please Enter OTP"); return; }
-    if (inputs.gst_no === undefined || inputs.gst_no === '') { notify("alert", "Please Select Your Password"); return; }
-    if (inputs.address === undefined || inputs.address === '') { notify("alert", "Please Select Your Password"); return; }
-    if (inputs.pin_code === undefined || inputs.pin_code === '') { notify("alert", "Please Select Your Password"); return; }
+    if (inputs.company_name === undefined || inputs.company_name === '') { notify("alert", "Please Enter Your Company Name"); return; }
+    if (inputs.gst_no === undefined || inputs.gst_no === '') { notify("alert", "Please Enter Your GST Number"); return; }
+    if (inputs.address === undefined || inputs.address === '') { notify("alert", "Please Enter Your Address"); return; }
+    if (inputs.pin_code === undefined || inputs.pin_code === '') { notify("alert", "Please Enter Your Pincode"); return; }
     if (inputs.state === undefined || inputs.state === '') { notify("alert", "Please Select Your State"); return; }
     if (inputs.city === undefined || inputs.city === '') { notify("alert", "Please Select Your City"); return; }
 
@@ -301,7 +301,7 @@ function Profile({ userDetails }) {
             }
           </div>
 
-          <div className="bg-white shadow profile-box my-4">
+          {/* <div className="bg-white shadow profile-box my-4">
             <form onSubmit={passwordSubmit}>
               <div className="mb-3">
                 <label className="form-label">Enter Password</label>
@@ -313,7 +313,7 @@ function Profile({ userDetails }) {
               </div>
               <Button type="submit" variant="primary" className="btn-black-form">Change Password</Button>
             </form>
-          </div>
+          </div> */}
         </div>
 
         <Modal show={modalShow.show} onHide={() => setModalShow({ show: false, title: '' })} size="sm" aria-labelledby="contained-modal-title-vcenter" centered>

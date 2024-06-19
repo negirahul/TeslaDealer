@@ -552,6 +552,57 @@ position: relative;
   background: white;
 }
 
+.leadtabs .nav-pills .nav-item .nav-link.active{
+  padding: 5px 10px;
+  background-color: black;
+  color: #ffffff;
+}
+
+.leadtabs .nav-pills .nav-item .nav-link{
+  padding: 5px 10px;
+  background-color: rgba(0, 0, 0, 0);
+  color: #000000;
+  border: 1px solid #000000;
+}
+
+.leadnav{
+  flex-wrap: nowrap;
+  width: 100%;
+  overflow-x: scroll;
+  margin-bottom: 10px;
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.leadnav::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.leadnav {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+.leadnav .nav-item{
+  margin-right: 10px;
+}
+
+.leadnav .nav-item a{
+  white-space: nowrap;
+}
+
+.textBlur{
+  filter: blur(4px);
+  -webkit-filter: blur(4px);
+
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none; /* Safari */
+  -khtml-user-select: none; /* Konqueror HTML */
+  -moz-user-select: none; /* Old versions of Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+  user-select: none; /* Non-prefixed version, currently supported by Chrome, Edge, Opera and Firefox */
+}
+
 hr {
   margin: .5rem 0;
   color: inherit;

@@ -6,6 +6,7 @@ import Login from './pages/login';
 import Register from './pages/register';
 import Forgot from './pages/forgot-password';
 import Dashboard from './pages/dashboard';
+import LeadManagement from './pages/lead-management';
 import RegisterWarranty from './pages/register-warranty';
 import ReisingComplaint from './pages/raising-complaint';
 import Wallet from './pages/wallet';
@@ -50,6 +51,7 @@ function App() {
           <Route path="register" element={<Register />} />
           <Route path="forgot-password" element={<Forgot />} />
           <Route path="dashboard" element={<Dashboard userDetails={userDetails}/>} />
+          <Route path="lead-management" element={<LeadManagement userDetails={userDetails}/>} />
           <Route path="register-warranty" element={<RegisterWarranty userDetails={userDetails}/>} />
           <Route path="raising-complaint" element={<ReisingComplaint userDetails={userDetails}/>} />
           <Route path="wallet" element={<Wallet userDetails={userDetails}/>} />
